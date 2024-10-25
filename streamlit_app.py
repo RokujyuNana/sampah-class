@@ -7,7 +7,18 @@ from PIL import Image
 # Load the garbage classification model
 model = load_model('garbage_classification_model.h5')
 
+# Get the model's expected input shape
+input_shape = model.input_shape[1:3]  # Exclude the batch dimension
+
 def predict_image(img):
+    # Convert the image to RGB if it is not already
+    if img.mode != "RGB":
+        img = img.convert("RGB")
+
+    # Resize the image to match the input shape of the model
+    img = img.resize(input_shape)
+
+    # Convert the image to an array and normalize it
     img_array = image.img_to_array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
     
@@ -42,7 +53,6 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
-    img = img.resize((150, 150))
     st.image(img, caption='Uploaded Image', use_column_width=True)
 
     if st.button('Predict'):
