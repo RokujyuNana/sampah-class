@@ -5,7 +5,7 @@ from PIL import Image
 from tensorflow.keras.preprocessing import image
 
 # Load the TFLite model and allocate tensors
-interpreter = tf.lite.Interpreter(model_path='sampah_model.tflite')
+interpreter = tf.lite.Interpreter(model_path='model_sampah_10.tflite')
 interpreter.allocate_tensors()
 
 # Get input and output details of the model
